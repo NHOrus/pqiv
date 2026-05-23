@@ -6,7 +6,7 @@ CFLAGS?=-O2 -g
 CROSS=
 DESTDIR=
 GTK_VERSION=0
-PQIV_WARNING_FLAGS=-Wall -Wextra -Wfloat-equal -Wpointer-arith -Wcast-align -Wstrict-overflow=1 -Wwrite-strings -Waggregate-return -Wunreachable-code -Wno-unused-parameter -fanalyzer
+PQIV_WARNING_FLAGS=-Wall -Wextra -Wfloat-equal -Wpointer-arith -Wcast-align -Wstrict-overflow=1 -Wwrite-strings -Waggregate-return -Wunreachable-code -Wno-unused-parameter
 LDLIBS=-lm
 PREFIX=/usr
 EPREFIX=$(PREFIX)
@@ -24,6 +24,11 @@ EXTRA_CFLAGS_SHARED_OBJECTS=-fPIC
 EXTRA_CFLAGS_BINARY=
 EXTRA_LDFLAGS_SHARED_OBJECTS=
 EXTRA_LDFLAGS_BINARY=
+
+# If compiler is gcc, enable static analyzer
+ifneq ($(findstring gcc, $(CC)),)
+	PQIV_WARNING_FLAGS+=-fanalyzer
+endif
 
 # Always look for source code relative to the directory of this makefile
 SOURCEDIR:=$(dir $(abspath $(lastword $(MAKEFILE_LIST))))
